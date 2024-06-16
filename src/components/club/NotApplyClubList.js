@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import {
+  Button,
+  Card,
+  Container,
+  Row,
+  Col,
+  Modal,
+  Form,
+  Spinner,
+} from "react-bootstrap";
+import {
   fetchClubs,
   downloadTemplate,
   uploadFile,
@@ -8,6 +18,7 @@ import {
 const NotApplyClubList = () => {
   const [clubs, setClubs] = useState([]);
   const [selectedClubId, setSelectedClubId] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -17,6 +28,8 @@ const NotApplyClubList = () => {
         setClubs(data);
       } catch (error) {
         console.error("Error fetching clubs:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -55,107 +68,120 @@ const NotApplyClubList = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <h1 className="centered-heading">Club List</h1>
-      <button className="btn btn-primary mb-3" onClick={handleDownloadTemplate}>
+    <Container className="mt-4">
+      <h1 className="text-center mb-4">Club List</h1>
+      <Button
+        variant="primary"
+        className="mb-3"
+        onClick={handleDownloadTemplate}
+      >
         동아리 가입 신청서 양식 다운로드
-      </button>
-      <div>
-        {clubs.map((club) => (
-          <div key={club.id} className="mb-3">
-            <h2
-              onClick={() => handleClubClick(club.id)}
-              style={{ cursor: "pointer" }}
-            >
-              {club.name}
-            </h2>
-            {club.imageRoute && (
-              <img
-                src={club.imageRoute}
-                alt={club.name}
-                className="img-thumbnail"
-                style={{ maxWidth: "100px", maxHeight: "100px" }}
-              />
-            )}
-            {selectedClubId === club.id && (
-              <div className="mt-3">
-                <h2>Club Details</h2>
-                <p>
-                  <strong>Club Type:</strong> {club.clubType}
-                </p>
-                <p>
-                  <strong>Name:</strong> {club.name}
-                </p>
-                <p>
-                  <strong>Introduce:</strong> {club.introduce}
-                </p>
-                <p>
-                  <strong>History:</strong> {club.history}
-                </p>
-                <p>
-                  <strong>Meeting Time:</strong>{" "}
-                  {new Date(club.meetingTime).toLocaleString()}
-                </p>
-                <p>
-                  <strong>President:</strong> {club.president}
-                </p>
-                <p>
-                  <strong>Vice President:</strong> {club.vicePresident}
-                </p>
-                <p>
-                  <strong>General Affairs:</strong> {club.generalAffairs}
-                </p>
-                <h3>Professor</h3>
-                <p>
-                  <strong>Name:</strong> {club.professor.name}
-                </p>
-                <p>
-                  <strong>Major:</strong> {club.professor.major}
-                </p>
-                <p>
-                  <strong>Phone Number:</strong> {club.professor.phoneNum}
-                </p>
-                <p>
-                  <strong>Email:</strong> {club.professor.email}
-                </p>
-                <h3>Master Member</h3>
-                <p>
-                  <strong>Name:</strong> {club.masterMember.name}
-                </p>
-                <p>
-                  <strong>Student Number:</strong> {club.masterMember.stuNum}
-                </p>
-                <p>
-                  <strong>Major:</strong> {club.masterMember.major}
-                </p>
-                <p>
-                  <strong>Phone Number:</strong> {club.masterMember.phoneNum}
-                </p>
-                <p>
-                  <strong>Email:</strong> {club.masterMember.email}
-                </p>
-                <p>
-                  <strong>Gender:</strong> {club.masterMember.gender}
-                </p>
-                <p>
-                  <strong>Birth Date:</strong> {club.masterMember.birthDate}
-                </p>
-                <label htmlFor="fileInput" className="btn btn-primary">
-                  가입 신청
-                </label>
-                <input
-                  type="file"
-                  id="fileInput"
-                  accept=".hwp"
-                  onChange={(e) => handleFileUpload(e, club.id)}
-                  style={{ display: "none" }}
-                />
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
+      </Button>
+      {loading ? (
+        <div className="text-center">
+          <Spinner animation="border" />
+        </div>
+      ) : (
+        <Row>
+          {clubs.map((club) => (
+            <Col md={6} lg={4} key={club.id} className="mb-3">
+              <Card>
+                <Card.Body
+                  onClick={() => handleClubClick(club.id)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <Card.Title>{club.name}</Card.Title>
+                  {club.imageRoute && (
+                    <Card.Img
+                      src={club.imageRoute}
+                      alt={club.name}
+                      className="img-thumbnail mb-3"
+                      style={{ maxWidth: "100px", maxHeight: "100px" }}
+                    />
+                  )}
+                  {selectedClubId === club.id && (
+                    <div>
+                      <h5>Club Details</h5>
+                      <p>
+                        <strong>Club Type:</strong> {club.clubType}
+                      </p>
+                      <p>
+                        <strong>Introduce:</strong> {club.introduce}
+                      </p>
+                      <p>
+                        <strong>History:</strong> {club.history}
+                      </p>
+                      <p>
+                        <strong>Meeting Time:</strong>{" "}
+                        {new Date(club.meetingTime).toLocaleString()}
+                      </p>
+                      <p>
+                        <strong>President:</strong> {club.president}
+                      </p>
+                      <p>
+                        <strong>Vice President:</strong> {club.vicePresident}
+                      </p>
+                      <p>
+                        <strong>General Affairs:</strong> {club.generalAffairs}
+                      </p>
+                      <h6>Professor</h6>
+                      <p>
+                        <strong>Name:</strong> {club.professor.name}
+                      </p>
+                      <p>
+                        <strong>Major:</strong> {club.professor.major}
+                      </p>
+                      <p>
+                        <strong>Phone Number:</strong> {club.professor.phoneNum}
+                      </p>
+                      <p>
+                        <strong>Email:</strong> {club.professor.email}
+                      </p>
+                      <h6>Master Member</h6>
+                      <p>
+                        <strong>Name:</strong> {club.masterMember.name}
+                      </p>
+                      <p>
+                        <strong>Student Number:</strong>{" "}
+                        {club.masterMember.stuNum}
+                      </p>
+                      <p>
+                        <strong>Major:</strong> {club.masterMember.major}
+                      </p>
+                      <p>
+                        <strong>Phone Number:</strong>{" "}
+                        {club.masterMember.phoneNum}
+                      </p>
+                      <p>
+                        <strong>Email:</strong> {club.masterMember.email}
+                      </p>
+                      <p>
+                        <strong>Gender:</strong> {club.masterMember.gender}
+                      </p>
+                      <p>
+                        <strong>Birth Date:</strong>{" "}
+                        {club.masterMember.birthDate}
+                      </p>
+                      <Form.Group controlId="fileInput">
+                        <Form.Label className="btn btn-primary">
+                          가입 신청
+                        </Form.Label>
+                        <Form.Control
+                          type="file"
+                          accept=".hwp"
+                          onChange={(e) => handleFileUpload(e, club.id)}
+                          style={{ display: "none" }}
+                        />
+                      </Form.Group>
+                    </div>
+                  )}
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      )}
+    </Container>
   );
 };
 

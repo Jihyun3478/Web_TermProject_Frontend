@@ -4,7 +4,7 @@ import { AppBar, Toolbar, Typography, Container, Grid, Paper, Button, Tabs, Tab 
 import { fetchActivityVideos } from '../api/master/BoardApi';
 
 const MainDashboard = () => {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
   const navigate = useNavigate();
   const [activityVideos, setActivityVideos] = useState([]);
 
@@ -32,14 +32,68 @@ const MainDashboard = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             동아리 관리 시스템
           </Typography>
-          <Button color="inherit" component={Link} to="/signin">로그인</Button>
-          <Button color="inherit" component={Link} to="/signup">회원가입</Button>
+          {isLoggedIn ? (
+            <>
+              <Button color="inherit" onClick={handleLogout}>
+                로그아웃
+              </Button>
+              <AccountCircle
+                sx={{ cursor: "pointer" }}
+                onClick={handleIconClick}
+              />
+            </>
+          ) : (
+            <>
+              <Button color="inherit" component={Link} to="/signin">
+                로그인
+              </Button>
+              <Button color="inherit" component={Link} to="/signup">
+                회원가입
+              </Button>
+            </>
+          )}
         </Toolbar>
         <Tabs value={value} onChange={handleChange} centered>
-          <Tab label={<Link to="/clubList" style={{ textDecoration: 'none', color: 'inherit' }}>동아리 조회</Link>} />
-          <Tab label={<Link to="/events" style={{ textDecoration: 'none', color: 'inherit' }}>동아리 행사</Link>} />
-          <Tab label={<Link to="/videos" style={{ textDecoration: 'none', color: 'inherit' }}>동영상</Link>} />
-          <Tab label={<Link to="/photos" style={{ textDecoration: 'none', color: 'inherit' }}>사진</Link>} />
+          <Tab
+            label={
+              <Link
+                to="/clubList"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                동아리 조회
+              </Link>
+            }
+          />
+          <Tab
+            label={
+              <Link
+                to="/events"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                동아리 행사
+              </Link>
+            }
+          />
+          <Tab
+            label={
+              <Link
+                to="/videos"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                동영상
+              </Link>
+            }
+          />
+          <Tab
+            label={
+              <Link
+                to="/photos"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                사진
+              </Link>
+            }
+          />
         </Tabs>
       </AppBar>
 
@@ -48,8 +102,13 @@ const MainDashboard = () => {
           {/* 동아리 행사 공지 */}
           <Grid item xs={12} md={6}>
             <Paper
-              sx={{ p: 2, display: 'flex', flexDirection: 'column', cursor: 'pointer' }}
-              onClick={() => navigate('/posts/noticeClub')}
+              sx={{
+                p: 2,
+                display: "flex",
+                flexDirection: "column",
+                cursor: "pointer",
+              }}
+              onClick={() => navigate("/posts/noticeClub")}
             >
               <Typography variant="h6" gutterBottom>동아리 행사 공지</Typography>
               <Typography>공지 1</Typography>
@@ -61,8 +120,13 @@ const MainDashboard = () => {
           {/* 부원 모집 게시판 */}
           <Grid item xs={12} md={6}>
             <Paper
-              sx={{ p: 2, display: 'flex', flexDirection: 'column', cursor: 'pointer' }}
-              onClick={() => navigate('/posts/recruitMember')}
+              sx={{
+                p: 2,
+                display: "flex",
+                flexDirection: "column",
+                cursor: "pointer",
+              }}
+              onClick={() => navigate("/posts/recruitMember")}
             >
               <Typography variant="h6" gutterBottom>부원 모집 게시판</Typography>
               <Typography>모집 공고 1</Typography>
@@ -74,14 +138,18 @@ const MainDashboard = () => {
           {/* 활동 사진 */}
           <Grid item xs={12}>
             <Paper
-              sx={{ p: 2, cursor: 'pointer' }}
-              onClick={() => navigate('/posts/activityPhoto')}
+              sx={{ p: 2, cursor: "pointer" }}
+              onClick={() => navigate("/posts/activityPhoto")}
             >
-              <Typography variant="h6" gutterBottom>활동 사진</Typography>
+              <Typography variant="h6" gutterBottom>
+                활동 사진
+              </Typography>
               <Grid container spacing={2}>
                 {[1, 2, 3].map((photo) => (
                   <Grid item xs={4} key={photo}>
-                    <Paper sx={{ p: 2, textAlign: 'center' }}>사진 {photo}</Paper>
+                    <Paper sx={{ p: 2, textAlign: "center" }}>
+                      사진 {photo}
+                    </Paper>
                   </Grid>
                 ))}
               </Grid>
@@ -91,14 +159,16 @@ const MainDashboard = () => {
           {/* 활동 영상 */}
           <Grid item xs={12}>
             <Paper
-              sx={{ p: 2, cursor: 'pointer' }}
-              onClick={() => navigate('/posts/activityVideo')}
+              sx={{ p: 2, cursor: "pointer" }}
+              onClick={() => navigate("/posts/activityVideo")}
             >
-              <Typography variant="h6" gutterBottom>활동 영상</Typography>
+              <Typography variant="h6" gutterBottom>
+                활동 영상
+              </Typography>
               <Grid container spacing={2}>
                 {activityVideos.map((video, index) => (
                   <Grid item xs={4} key={index}>
-                    <Paper sx={{ p: 2, textAlign: 'center' }}>
+                    <Paper sx={{ p: 2, textAlign: "center" }}>
                       <iframe
                         width="100%"
                         height="315"
