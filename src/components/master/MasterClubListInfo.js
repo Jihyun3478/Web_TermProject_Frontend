@@ -1,4 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Form,
+  Button,
+  Spinner,
+  Accordion,
+} from "react-bootstrap";
 import { clublist, updateClubInfo, updateClubImageFileInfo, acceptMember } from '../../api/master/MasterApi';
 
 const MasterClubListInfo = () => {
@@ -132,140 +142,230 @@ const MasterClubListInfo = () => {
     }
   };
 
-  if (loading) return <div>로딩 중...</div>;
+  if (loading)
+    return (
+      <Container className="text-center">
+        <Spinner animation="border" />
+      </Container>
+    );
   if (error) return <div>에러: {error.message}</div>;
 
   return (
-    <div>
-      {clubData.map((club) => (
-        <div key={club.id}>
-          <h2 onClick={() => toggleExpand(club.id)} style={{ cursor: 'pointer' }}>
-            {club.name}
-          </h2>
-          {expandedClubId === club.id && (
-            <div>
-              <div>
-                <label>클럽 타입: </label>
-                {club.clubType}
-              </div>
-              <div>
-                <label>이름: </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={editClub[club.id]?.name || club.name}
-                  onChange={(e) => handleInputChange(e, club.id)}
-                />
-              </div>
-              <div>
-                <label>소개: </label>
-                <input
-                  type="text"
-                  name="introduce"
-                  value={editClub[club.id]?.introduce || club.introduce}
-                  onChange={(e) => handleInputChange(e, club.id)}
-                />
-              </div>
-              <div>
-                <label>역사: </label>
-                <input
-                  type="text"
-                  name="history"
-                  value={editClub[club.id]?.history || club.history}
-                  onChange={(e) => handleInputChange(e, club.id)}
-                />
-              </div>
-              {club.imageRoute && (
-                <div>
-                  <img src={club.imageRoute} alt="클럽 이미지" style={{ width: '200px', height: '200px' }} />
-                </div>
-              )}
-              <div>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handleImageUpload(e, club.id)}
-                />
-              </div>
-              <div>
-                <label>모임 시간: </label>
-                <input
-                  type="datetime-local"
-                  name="meetingTime"
-                  value={editClub[club.id]?.meetingTime || new Date(club.meetingTime).toISOString().slice(0, -1)}
-                  onChange={(e) => handleInputChange(e, club.id)}
-                />
-              </div>
-              <div>
-                <label>회장: </label>
-                <input
-                  type="text"
-                  name="president"
-                  value={editClub[club.id]?.president || club.president}
-                  onChange={(e) => handleInputChange(e, club.id)}
-                />
-              </div>
-              <div>
-                <label>부회장: </label>
-                <input
-                  type="text"
-                  name="vicePresident"
-                  value={editClub[club.id]?.vicePresident || club.vicePresident}
-                  onChange={(e) => handleInputChange(e, club.id)}
-                />
-              </div>
-              <div>
-                <label>총무: </label>
-                <input
-                  type="text"
-                  name="generalAffairs"
-                  value={editClub[club.id]?.generalAffairs || club.generalAffairs}
-                  onChange={(e) => handleInputChange(e, club.id)}
-                />
-              </div>
-              <button onClick={() => handleSave(club.id)}>수정</button>
-              <h3>회장: {club.president}</h3>
-              <h3>부회장: {club.vicePresident}</h3>
-              <h3>총무: {club.generalAffairs}</h3>
-              <h3>교수: {club.professor.name}</h3>
-              <p>전공: {club.professor.major}</p>
-              <p>전화번호: {club.professor.phoneNum}</p>
-              <p>이메일: {club.professor.email}</p>
-              <h3>마스터 멤버: {club.masterMember.name}</h3>
-              <p>전공: {club.masterMember.major}</p>
-              <p>전화번호: {club.masterMember.phoneNum}</p>
-              <p>이메일: {club.masterMember.email}</p>
-
-              <h3>현 멤버:</h3>
-              <ul>
-                {club.applyMember
-                  .filter((member) => member.applyMemberStatus === 'CLUB_MEMBER')
-                  .map((member) => (
-                    <li key={member.id}>
-                      {member.member.name} ({member.member.major})
-                      <button onClick={() => handleReject(member.id, club.id)}> 탈퇴</button>
-                      <button onClick={() => handleMemberInfo(club.id, member.member.id)}>멤버 정보</button>
-                    </li>
-                  ))}
-              </ul>
-
-              <h3>신청 중인 멤버:</h3>
-              <ul>
-                {club.applyMember
-                  .filter((member) => member.applyMemberStatus === 'NOT_CLUB_MEMBER')
-                  .map((member) => (
-                    <li key={member.id}>
-                      {member.member.name} ({member.member.major})
-                      <button onClick={() => handleAccept(member.id, club.id)}>승낙</button>
-                      <button onClick={() => handleMemberInfo(club.id, member.member.id)}>멤버 정보</button>
-                    </li>
-                  ))}
-              </ul>
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
+    <Container className="mt-4">
+      <Row>
+        {clubData.map((club) => (
+          <Col md={6} lg={4} key={club.id} className="mb-3">
+            <Card>
+              <Accordion>
+                <Accordion.Toggle
+                  as={Card.Header}
+                  eventKey="0"
+                  onClick={() => toggleExpand(club.id)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <Card.Title>{club.name}</Card.Title>
+                </Accordion.Toggle>
+                <Accordion.Collapse eventKey="0">
+                  <Card.Body>
+                    <Form>
+                      <Form.Group controlId={`clubType${club.id}`}>
+                        <Form.Label>클럽 타입</Form.Label>
+                        <Form.Control
+                          type="text"
+                          readOnly
+                          defaultValue={club.clubType}
+                        />
+                      </Form.Group>
+                      <Form.Group controlId={`name${club.id}`}>
+                        <Form.Label>이름</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="name"
+                          defaultValue={club.name}
+                          onChange={(e) => handleInputChange(e, club.id)}
+                        />
+                      </Form.Group>
+                      <Form.Group controlId={`introduce${club.id}`}>
+                        <Form.Label>소개</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="introduce"
+                          defaultValue={club.introduce}
+                          onChange={(e) => handleInputChange(e, club.id)}
+                        />
+                      </Form.Group>
+                      <Form.Group controlId={`history${club.id}`}>
+                        <Form.Label>역사</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="history"
+                          defaultValue={club.history}
+                          onChange={(e) => handleInputChange(e, club.id)}
+                        />
+                      </Form.Group>
+                      <Form.Group controlId={`meetingTime${club.id}`}>
+                        <Form.Label>모임 시간</Form.Label>
+                        <Form.Control
+                          type="datetime-local"
+                          name="meetingTime"
+                          defaultValue={new Date(club.meetingTime)
+                            .toISOString()
+                            .slice(0, -1)}
+                          onChange={(e) => handleInputChange(e, club.id)}
+                        />
+                      </Form.Group>
+                      <Form.Group controlId={`president${club.id}`}>
+                        <Form.Label>회장</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="president"
+                          defaultValue={club.president}
+                          onChange={(e) => handleInputChange(e, club.id)}
+                        />
+                      </Form.Group>
+                      <Form.Group controlId={`vicePresident${club.id}`}>
+                        <Form.Label>부회장</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="vicePresident"
+                          defaultValue={club.vicePresident}
+                          onChange={(e) => handleInputChange(e, club.id)}
+                        />
+                      </Form.Group>
+                      <Form.Group controlId={`generalAffairs${club.id}`}>
+                        <Form.Label>총무</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="generalAffairs"
+                          defaultValue={club.generalAffairs}
+                          onChange={(e) => handleInputChange(e, club.id)}
+                        />
+                      </Form.Group>
+                      {club.imageRoute && (
+                        <Form.Group controlId={`image${club.id}`}>
+                          <Card.Img
+                            src={club.imageRoute}
+                            alt="클럽 이미지"
+                            className="img-thumbnail mb-3"
+                            style={{ width: "200px", height: "200px" }}
+                          />
+                          <Form.File
+                            label="이미지 업로드"
+                            accept="image/*"
+                            onChange={(e) => handleImageUpload(e, club.id)}
+                          />
+                        </Form.Group>
+                      )}
+                      <Button
+                        variant="primary"
+                        onClick={() => handleSave(club.id)}
+                      >
+                        수정
+                      </Button>
+                    </Form>
+                    <h5 className="mt-4">Professor</h5>
+                    <p>
+                      <strong>Name:</strong> {club.professor.name}
+                    </p>
+                    <p>
+                      <strong>Major:</strong> {club.professor.major}
+                    </p>
+                    <p>
+                      <strong>Phone Number:</strong> {club.professor.phoneNum}
+                    </p>
+                    <p>
+                      <strong>Email:</strong> {club.professor.email}
+                    </p>
+                    <h5>Master Member</h5>
+                    <p>
+                      <strong>Name:</strong> {club.masterMember.name}
+                    </p>
+                    <p>
+                      <strong>Student Number:</strong>{" "}
+                      {club.masterMember.stuNum}
+                    </p>
+                    <p>
+                      <strong>Major:</strong> {club.masterMember.major}
+                    </p>
+                    <p>
+                      <strong>Phone Number:</strong>{" "}
+                      {club.masterMember.phoneNum}
+                    </p>
+                    <p>
+                      <strong>Email:</strong> {club.masterMember.email}
+                    </p>
+                    <p>
+                      <strong>Gender:</strong> {club.masterMember.gender}
+                    </p>
+                    <p>
+                      <strong>Birth Date:</strong> {club.masterMember.birthDate}
+                    </p>
+                    <h5>Current Members</h5>
+                    <ul>
+                      {club.applyMember
+                        .filter(
+                          (member) => member.applyMemberStatus === "CLUB_MEMBER"
+                        )
+                        .map((member) => (
+                          <li key={member.id}>
+                            {member.member.name} ({member.member.major})
+                            <Button
+                              variant="danger"
+                              size="sm"
+                              onClick={() => handleReject(member.id, club.id)}
+                            >
+                              {" "}
+                              탈퇴
+                            </Button>
+                            <Button
+                              variant="info"
+                              size="sm"
+                              onClick={() =>
+                                handleMemberInfo(club.id, member.member.id)
+                              }
+                            >
+                              멤버 정보
+                            </Button>
+                          </li>
+                        ))}
+                    </ul>
+                    <h5>Pending Members</h5>
+                    <ul>
+                      {club.applyMember
+                        .filter(
+                          (member) =>
+                            member.applyMemberStatus === "NOT_CLUB_MEMBER"
+                        )
+                        .map((member) => (
+                          <li key={member.id}>
+                            {member.member.name} ({member.member.major})
+                            <Button
+                              variant="success"
+                              size="sm"
+                              onClick={() => handleAccept(member.id, club.id)}
+                            >
+                              승낙
+                            </Button>
+                            <Button
+                              variant="info"
+                              size="sm"
+                              onClick={() =>
+                                handleMemberInfo(club.id, member.member.id)
+                              }
+                            >
+                              멤버 정보
+                            </Button>
+                          </li>
+                        ))}
+                    </ul>
+                  </Card.Body>
+                </Accordion.Collapse>
+              </Accordion>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+    </Container>
   );
 };
 

@@ -15,8 +15,12 @@ const ApplyClubList = () => {
         setApplyClubList(data);
       })
       .catch((error) => {
-        setError("동아리 신청 목록을 불러오는 중 오류가 발생했습니다.");
-        console.error(error);
+        if (error.response && error.response.status === 403) {
+          setError("접근 권한이 없습니다.");
+        } else {
+          setError("동아리 신청 목록을 불러오는 중 오류가 발생했습니다.");
+          console.error(error);
+        }
       });
   }, []);
 
