@@ -1,8 +1,10 @@
-import React from 'react';
+// src/App.js
+import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SignUp from "./components/member/SignUp";
 import SignIn from "./components/member/SignIn";
-import MemberInfo from "./components/MemberInfo";
+import MyApplyClubList from "./components/member/MyApplyClubList";
+import MemberInfo from "./components/member/MyPage";
 import MasterClubListInfo from "./components/master/MasterClubListInfo";
 import NotApplyClubList from "./components/club/NotApplyClubList";
 import Oauth2Login from "./components/kakao/Oauth2Login";
@@ -11,37 +13,45 @@ import RegisterApplyClub from "./components/applyClub/RegisterApplyClub";
 import ApplyClubList from "./components/admin/ApplyClubList";
 import ApplyClubDetail from "./components/admin/ApplyClubDetail";
 import "./App.css";
-import PostManagement from './api/master/PostManagement';
-import MainDashboard from './components/MainDashboard';
-import NoticeClubBoard from './components/board/NoticeClubBoard';
-import RecruitMemberBoard from './components/board/RecruitMemberBoard';
-import ActivityVideoBoard from './components/board/ActivityVideoBoard';
-import ActivityPhotoBoard from './components/board/ActivityPhotoBoard';
+import PostManagement from "./api/master/PostManagement";
+import MainDashboard from "./components/MainDashboard";
+import NoticeClubBoard from "./components/board/NoticeClubBoard";
+import RecruitMemberBoard from "./components/board/RecruitMemberBoard";
+import ActivityVideoBoard from "./components/board/ActivityVideoBoard";
+import ActivityPhotoBoard from "./components/board/ActivityPhotoBoard";
+import { AuthProvider } from "./AuthContext";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-      <Route path="/" element={<MainDashboard />} />
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<MainDashboard />} />
           <Route path="/posts/noticeClub" element={<NoticeClubBoard />} />
-        <Route path="/posts/recruitMember" component={<RecruitMemberBoard />} />
-        <Route path="/posts/activityVideo" component={<ActivityVideoBoard />} />
-        <Route path="/posts/activityPhoto" component={<ActivityPhotoBoard />} />
-        <Route path="/master/postManagement" element={<PostManagement />} />
-        <Route path="/signUp" element={<SignUp />} />
-        <Route path="/signIn" element={<SignIn />} />
-        <Route path="/memberInfo" element={<MemberInfo />} />
-        <Route path="/admin" element={<ApplyClubList />} />
-        <Route path="/admin/list/:applyClubId" element={<ApplyClubDetail />} />
+          <Route path="/posts/recruitMember" element={<RecruitMemberBoard />} />
+          <Route path="/posts/activityVideo" element={<ActivityVideoBoard />} />
+          <Route path="/posts/activityPhoto" element={<ActivityPhotoBoard />} />
+          <Route path="/master/postManagement" element={<PostManagement />} />
 
-        <Route path="/kakaoOauth2Login" element={<Oauth2Login />} />
-        <Route path="/loginSuccess" element={<LoginSuccess />} />
+          <Route path="/signUp" element={<SignUp />} />
+          <Route path="/signIn" element={<SignIn />} />
+          <Route path="/mypage" element={<MemberInfo />} />
+          <Route path="/mypage/applyClubList" element={<MyApplyClubList />} />
+          <Route path="/admin" element={<ApplyClubList />} />
+          <Route
+            path="/admin/list/:applyClubId"
+            element={<ApplyClubDetail />}
+          />
 
-        <Route path="/applyClub/create" element={<RegisterApplyClub />} />
-        <Route path="/master/clubList" element={<MasterClubListInfo />} />
-        <Route path="/notApplyClubList" element={<NotApplyClubList />} />
-      </Routes>
-    </Router>
+          <Route path="/kakaoOauth2Login" element={<Oauth2Login />} />
+          <Route path="/loginSuccess" element={<LoginSuccess />} />
+
+          <Route path="/applyClub/create" element={<RegisterApplyClub />} />
+          <Route path="/master/clubList" element={<MasterClubListInfo />} />
+          <Route path="/notApplyClubList" element={<NotApplyClubList />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 
