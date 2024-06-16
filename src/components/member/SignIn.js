@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { signIn } from "../../api/api.js";
 import { useNavigate } from "react-router-dom";
 import Oauth2Login from "../kakao/Oauth2Login.js";
+import { AuthContext } from "../../AuthContext";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({
     loginId: "",
     loginPw: "",
   });
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -21,10 +23,11 @@ const SignIn = () => {
     e.preventDefault();
     try {
       const response = await signIn(formData);
-      localStorage.setItem("token", response.data.accessToken);
+      login(response.data.accessToken); // 로그인 상태 업데이트
       alert("로그인 성공");
-      navigate("/memberInfo"); // 로그인 성공 후 memberInfo 페이지로 이동
+      navigate("/"); // 로그인 성공 후 홈 페이지로 이동
     } catch (error) {
+      alert("로그인 실패");
       console.error("로그인 실패:", error);
     }
   };
