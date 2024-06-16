@@ -11,11 +11,23 @@ import RegisterApplyClub from "./components/applyClub/RegisterApplyClub";
 import ApplyClubList from "./components/admin/ApplyClubList";
 import ApplyClubDetail from "./components/admin/ApplyClubDetail";
 import "./App.css";
+import PostManagement from './api/master/PostManagement';
+import MainDashboard from './components/MainDashboard';
+import NoticeClubBoard from './components/board/NoticeClubBoard';
+import RecruitMemberBoard from './components/board/RecruitMemberBoard';
+import ActivityVideoBoard from './components/board/ActivityVideoBoard';
+import ActivityPhotoBoard from './components/board/ActivityPhotoBoard';
 
 function App() {
   return (
     <Router>
       <Routes>
+      <Route path="/" element={<MainDashboard />} />
+          <Route path="/posts/noticeClub" element={<NoticeClubBoard />} />
+        <Route path="/posts/recruitMember" component={<RecruitMemberBoard />} />
+        <Route path="/posts/activityVideo" component={<ActivityVideoBoard />} />
+        <Route path="/posts/activityPhoto" component={<ActivityPhotoBoard />} />
+        <Route path="/master/postManagement" element={<PostManagement />} />
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/signIn" element={<SignIn />} />
         <Route path="/memberInfo" element={<MemberInfo />} />
