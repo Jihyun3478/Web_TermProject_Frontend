@@ -1,3 +1,4 @@
+// BoardApi.js
 import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:8080/master/board';
@@ -57,7 +58,7 @@ export const saveActivityVideo = async (data) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/api/saveActivityVideo`, data, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+     //   'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
     });
@@ -80,6 +81,22 @@ export const fetchPosts = async (url) => {
     return response.data;
   } catch (error) {
     console.error('Error fetching posts:', error);
+    throw error;
+  }
+};
+
+// Fetch activity videos from the server
+export const fetchActivityVideos = async () => {
+  const token = localStorage.getItem('token');
+  try {
+    const response = await axios.get(`${API_BASE_URL}/api/activityVideo/findAll`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching activity videos:', error);
     throw error;
   }
 };

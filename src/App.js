@@ -25,7 +25,7 @@ function App() {
       <Route path="/" element={<MainDashboard />} />
           <Route path="/posts/noticeClub" element={<NoticeClubBoard />} />
         <Route path="/posts/recruitMember" component={<RecruitMemberBoard />} />
-        <Route path="/posts/activityVideo" component={<ActivityVideoBoard />} />
+        <Route path="/posts/activityVideo" element={<ActivityVideoBoard />} />
         <Route path="/posts/activityPhoto" component={<ActivityPhotoBoard />} />
         <Route path="/master/postManagement" element={<PostManagement />} />
         <Route path="/signUp" element={<SignUp />} />

@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { saveNoticeClub, saveRecruitMember, saveActivityPhoto, saveActivityVideo } from '../../api/master/BoardApi';
 
-const PostManagement = ({ category }) => {
+const PostManagement = ({ category, onPostSubmit }) => {
   const [newPost, setNewPost] = useState({
     title: '',
     content: '',
     category: category,
     image: null,
+    youtubeUrl: '',
   });
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    if (files) {
+    if (name === 'image') {
       setNewPost({ ...newPost, image: files[0] });
     } else {
       setNewPost({ ...newPost, [name]: value });
@@ -36,10 +37,10 @@ const PostManagement = ({ category }) => {
           response = await saveActivityPhoto(formData);
           break;
         case 'activityVideo':
-          // For activity video, we need to handle differently
           const videoData = {
             title: newPost.title,
             content: newPost.content,
+            youtubeUrl: newPost.youtubeUrl,
           };
           response = await saveActivityVideo(videoData);
           break;
@@ -51,7 +52,8 @@ const PostManagement = ({ category }) => {
           return;
       }
       console.log('Post submitted successfully:', response);
-      setNewPost({ title: '', content: '', category: '', image: null }); // Clear form
+      setNewPost({ title: '', content: '', category: '', image: null, youtubeUrl: '' }); // Clear form
+      onPostSubmit(); // 게시글 등록 후 콜백 함수 호출
     } catch (error) {
       console.error('Error submitting post:', error);
     }
@@ -84,6 +86,17 @@ const PostManagement = ({ category }) => {
             <input
               type="file"
               name="image"
+              onChange={handleChange}
+            />
+          </div>
+        )}
+        {category === 'activityVideo' && (
+          <div>
+            <label>YouTube URL:</label>
+            <input
+              type="text"
+              name="youtubeUrl"
+              value={newPost.youtubeUrl}
               onChange={handleChange}
             />
           </div>
