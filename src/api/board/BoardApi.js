@@ -40,14 +40,17 @@ export const saveNoticeClub = async (formData) => {
 // Save recruit member post
 export const saveRecruitMember = async (formData) => {
   try {
-    const response = await axiosInstance.post('/api/saveRecruitMember', formData, {
+    const config = {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
-    });
+    };
+
+    const response = await axiosInstance.post('/api/saveRecruitMember', formData, config);
+
     return response.data;
   } catch (error) {
-    console.error('Error saving recruit member post:', error);
+    console.error('부원 모집 저장 오류:', error);
     throw error;
   }
 };
@@ -55,14 +58,17 @@ export const saveRecruitMember = async (formData) => {
 // Save activity photo post
 export const saveActivityPhoto = async (formData) => {
   try {
-    const response = await axiosInstance.post('/api/saveActivityPhoto', formData, {
+    const config = {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
-    });
+    };
+
+    const response = await axiosInstance.post('/api/saveActivityPhoto', formData, config);
+
     return response.data;
   } catch (error) {
-    console.error('Error saving activity photo post:', error);
+    console.error('활동 사진 저장 오류:', error);
     throw error;
   }
 };
@@ -86,9 +92,20 @@ export const saveActivityVideo = async (data) => {
 export const fetchPosts = async (url) => {
   try {
     const response = await axiosInstance.get(url);
+    console.log('데이터 : ', response.data); // 데이터 로그 출력
+    return response.data; // 데이터 반환
+  } catch (error) {
+    console.error('동아리 공지 불러오기 오류 :', error);
+    throw error;
+  }
+};
+
+export const fetchRecruitMember = async (url) => {
+  try {
+    const response = await axiosInstance.get(url);
     return response.data;
   } catch (error) {
-    console.error('Error fetching posts:', error);
+    console.error('부원 모집 불러오기 오류:', error);
     throw error;
   }
 };
@@ -99,7 +116,7 @@ export const fetchActivityVideos = async (url) => {
     const response = await axiosInstance.get(url);
     return response.data;
   } catch (error) {
-    console.error('동영상 불러오기 에러:', error);
+    console.error('활동 영상 불러오기 오류:', error);
     throw error;
   }
 };
@@ -109,7 +126,7 @@ export const fetchActivityPhotos = async (url) => {
     const response = await axiosInstance.get(url);
     return response.data;
   } catch (error) {
-    console.error('Error fetching activity photos:', error);
+    console.error('활동 사진 불러오기 오류:', error);
     throw error;
   }
 };

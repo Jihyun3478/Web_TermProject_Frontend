@@ -1,29 +1,17 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Container,
-  Grid,
-  Paper,
-  Button,
-  Tabs,
-  Tab,
-} from "@mui/material";
+import { Container, Row, Col, Button, Tabs, Tab, Card } from "react-bootstrap";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { AuthContext } from "../AuthContext";
-import NoticeClubList from '../components/board/NoticeClubList';
-import ActivityVideoBoardList from "./board/ActivityVideoBoardList";
+import NoticeClubList from "../components/board/NoticeClubList"; // 이 줄을 추가하세요
+import RecruitMemberBoardList from "../components/board/RecruitMemberBoardList";
+import ActivityPhotoBoardList from "../components/board/ActivityPhotoBoardList";
+import ActivityVideoBoardList from "../components/board/ActivityVideoBoardList";
 
 const MainDashboard = () => {
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState("allClubList");
   const navigate = useNavigate();
   const { isLoggedIn, logout } = useContext(AuthContext);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
 
   const handleIconClick = () => {
     navigate("/mypage");
@@ -36,134 +24,88 @@ const MainDashboard = () => {
 
   return (
     <>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div className="container">
+          <Link className="navbar-brand" to="/">
             동아리 관리 시스템
-          </Typography>
-          {isLoggedIn ? (
-            <>
-              <Button color="inherit" onClick={handleLogout}>
-                로그아웃
-              </Button>
-              <AccountCircle
-                sx={{ cursor: "pointer" }}
-                onClick={handleIconClick}
-              />
-            </>
-          ) : (
-            <>
-              <Button color="inherit" component={Link} to="/signin">
-                로그인
-              </Button>
-              <Button color="inherit" component={Link} to="/signup">
-                회원가입
-              </Button>
-            </>
-          )}
-        </Toolbar>
-        <Tabs value={value} onChange={handleChange} centered>
-          <Tab
-            label="동아리 조회"
-            component={Link}
-            to="/allClubList"
-            style={{ textDecoration: "none", color: "inherit" }}
-          />
-          <Tab
-            label="동아리 행사"
-            component={Link}
-            to="/events"
-            style={{ textDecoration: "none", color: "inherit" }}
-          />
-          <Tab
-            label="동영상"
-            component={Link}
-            to="/videos"
-            style={{ textDecoration: "none", color: "inherit" }}
-          />
-          <Tab
-            label="사진"
-            component={Link}
-            to="/photos"
-            style={{ textDecoration: "none", color: "inherit" }}
-          />
-        </Tabs>
-      </AppBar>
+          </Link>
+          <div className="navbar-nav ml-auto">
+            {isLoggedIn ? (
+              <>
+                <Button variant="link" className="nav-link" onClick={handleLogout}>
+                  로그아웃
+                </Button>
+                <AccountCircle
+                  className="nav-link"
+                  style={{ cursor: "pointer" }}
+                  onClick={handleIconClick}
+                />
+              </>
+            ) : (
+              <>
+                <Link className="nav-link" to="/signin">
+                  로그인
+                </Link>
+                <Link className="nav-link" to="/signup">
+                  회원가입
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+      </nav>
+      <Tabs
+        activeKey={value}
+        onSelect={(k) => {
+          setValue(k);
+          navigate(`/${k}`);
+        }}
+        className="justify-content-center mt-3"
+      >
+        <Tab eventKey="allClubList" title="동아리 조회" />
+        <Tab eventKey="posts/noticeClub" title="동아리 행사" />
+        <Tab eventKey="posts/activityVideo" title="동영상" />
+        <Tab eventKey="posts/activityPhoto" title="사진" />
+      </Tabs>
 
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        <Grid container spacing={3}>
+      <Container className="mt-4 mb-4">
+        <Row>
           {/* 동아리 행사 공지 */}
-          <Grid item xs={12} md={6}>
-          <Paper
-  sx={{
-    p: 2,
-    display: "flex",
-    flexDirection: "column",
-    cursor: "pointer",
-  }}
-  onClick={() => navigate("/posts/noticeClub")}
->
-  <Typography variant="h6" gutterBottom>
-    동아리 행사 공지
-  </Typography>
-  <NoticeClubList />
-</Paper>
-          </Grid>
+          <Col xs={12} md={6}>
+            <Card onClick={() => navigate("/posts/noticeClub")} style={{ cursor: "pointer" }}>
+              <Card.Body>
+                <NoticeClubList />
+              </Card.Body>
+            </Card>
+          </Col>
 
           {/* 부원 모집 게시판 */}
-          <Grid item xs={12} md={6}>
-            <Paper
-              sx={{
-                p: 2,
-                display: "flex",
-                flexDirection: "column",
-                cursor: "pointer",
-              }}
-              onClick={() => navigate("/posts/recruitMember")}
-            >
-              <Typography variant="h6" gutterBottom>
-                부원 모집 게시판
-              </Typography>
-              {/* 여기에 실제 모집 공고 목록을 렌더링합니다 */}
-              <Typography>모집 공고 1</Typography>
-              <Typography>모집 공고 2</Typography>
-              <Typography>모집 공고 3</Typography>
-            </Paper>
-          </Grid>
+          <Col xs={12} md={6}>
+            <Card onClick={() => navigate("/posts/recruitMember")} style={{ cursor: "pointer" }}>
+              <Card.Body>
+                <RecruitMemberBoardList/>
+              </Card.Body>
+            </Card>
+          </Col>
 
           {/* 활동 사진 */}
-          <Grid item xs={12}>
-            <Paper
-              sx={{ p: 2, cursor: "pointer" }}
-              onClick={() => navigate("/posts/activityPhoto")}
-            >
-              <Typography variant="h6" gutterBottom>
-                활동 사진
-              </Typography>
-              <Grid container spacing={2}>
-                {[1, 2, 3].map((photo) => (
-                  <Grid item xs={4} key={photo}>
-                    <Paper sx={{ p: 2, textAlign: "center" }}>
-                      사진 {photo}
-                    </Paper>
-                  </Grid>
-                ))}
-              </Grid>
-            </Paper>
-          </Grid>
+          <Col xs={12}>
+            <Card onClick={() => navigate("/posts/activityPhoto")} style={{ cursor: "pointer" }}>
+              <Card.Body>
+                <ActivityPhotoBoardList/>
+              </Card.Body>
+            </Card>
+          </Col>
 
           {/* 활동 영상 */}
-          <Grid item xs={12}>
-            <Paper
-              sx={{ p: 2, cursor: "pointer" }}
-              onClick={() => navigate("/posts/activityVideo")}
-            >
-              <Typography variant="h6" gutterBottom>
-                활동 영상
-              </Typography>
-            </Paper>
-          </Grid>
-        </Grid>
+          <Col xs={12}>
+            <Card onClick={() => navigate("/posts/activityVideo")} style={{ cursor: "pointer" }}>
+              <Card.Body>
+              <ActivityVideoBoardList/>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
       </Container>
     </>
   );

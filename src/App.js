@@ -13,7 +13,7 @@ import RegisterApplyClub from "./components/applyClub/RegisterApplyClub";
 import ApplyClubList from "./components/admin/ApplyClubList";
 import ApplyClubDetail from "./components/admin/ApplyClubDetail";
 import "./App.css";
-import PostManagement from "./api/master/PostManagement";
+import PostManagement from "./components/board/PostManagement";
 import MainDashboard from "./components/MainDashboard";
 import NoticeClubBoard from "./components/board/NoticeClubBoard";
 import RecruitMemberBoard from "./components/board/RecruitMemberBoard";

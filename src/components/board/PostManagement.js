@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { saveNoticeClub, saveRecruitMember, saveActivityPhoto, saveActivityVideo } from './BoardApi';
+import { saveNoticeClub, saveRecruitMember, saveActivityPhoto, saveActivityVideo } from '../../api/board/BoardApi';
 
 const PostManagement = ({ category, onPostSubmit }) => {
   const [newPost, setNewPost] = useState({

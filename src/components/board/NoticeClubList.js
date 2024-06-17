@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchPosts } from '../../api/master/BoardApi'; // 경로 확인 후 수정
+import { fetchPosts } from '../../api/board/BoardApi'; // 경로 확인 후 수정
 import { Typography, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
