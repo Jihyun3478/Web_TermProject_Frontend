@@ -33,34 +33,38 @@ const SignIn = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <form onSubmit={handleSubmit}>
-        <h2 className="centered-heading">로그인</h2>
-        <div className="mb-3">
-          <label className="form-label">로그인 아이디:</label>
-          <input
-            type="text"
-            name="loginId"
-            value={formData.loginId}
-            onChange={handleChange}
-            className="form-control"
-          />
+    <div className="d-flex justify-content-center align-items-center vh-100">
+      <div className="container" style={{ maxWidth: "400px" }}>
+        <form onSubmit={handleSubmit}>
+          <h2 className="centered-heading text-center">로그인</h2>
+          <div className="mb-3">
+            <label className="form-label">아이디</label>
+            <input
+              type="text"
+              name="loginId"
+              value={formData.loginId}
+              onChange={handleChange}
+              className="form-control"
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">비밀번호</label>
+            <input
+              type="password"
+              name="loginPw"
+              value={formData.loginPw}
+              onChange={handleChange}
+              className="form-control"
+            />
+          </div>
+          <button type="submit" className="btn btn-primary w-100">
+            로그인
+          </button>
+        </form>
+        <div className="text-center mt-3">
+          <Oauth2Login />
         </div>
-        <div className="mb-3">
-          <label className="form-label">비밀번호:</label>
-          <input
-            type="password"
-            name="loginPw"
-            value={formData.loginPw}
-            onChange={handleChange}
-            className="form-control"
-          />
-        </div>
-        <button type="submit" className="btn btn-primary">
-          로그인
-        </button>
-      </form>
-      <Oauth2Login />
+      </div>
     </div>
   );
 };

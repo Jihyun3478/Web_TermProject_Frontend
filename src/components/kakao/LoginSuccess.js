@@ -11,7 +11,7 @@ const LoginSuccess = () => {
     const token = params.get('token');
     if (token) {
       localStorage.setItem('token', token);
-      navigate('/memberInfo'); 
+      navigate("/"); 
     }
   }, [location]);
 

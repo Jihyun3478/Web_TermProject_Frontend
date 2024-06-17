@@ -1,7 +1,6 @@
-// src/components/member/MyApplyClubList.js
-
 import React, { useState, useEffect } from "react";
 import { getApplyClubList } from "../../api/member/MemberApi.js";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const MyApplyClubList = () => {
   const [applyClubList, setApplyClubList] = useState([]);
@@ -20,18 +19,40 @@ const MyApplyClubList = () => {
   }, []);
 
   return (
-    <div>
-      <h3>동아리 신청 목록</h3>
+    <div className="container mt-5">
+      <h3 className="text-center mb-4">동아리 신청 목록</h3>
       {applyClubList.length > 0 ? (
-        <ul>
+        <div className="row">
           {applyClubList.map((club) => (
-            <li key={club.applyClubId}>
-              {club.clubName} ({club.clubType}) - {club.applyClubStatus}
-            </li>
+            <div key={club.applyClubId} className="col-md-4 mb-4">
+              <div className="card h-100">
+                <div className="card-body">
+                  <h5 className="card-title" style={{ fontSize: "1.5rem" }}>
+                    동아리 이름 : {club.clubName}
+                  </h5>
+                  <h6
+                    className="card-subtitle mb-2 text-muted"
+                    style={{ fontSize: "1.2rem" }}
+                  >
+                    동아리 종류 : {club.clubType}
+                  </h6>
+                  <p className="card-text">
+                    동아리 신청 현황 : {club.applyClubStatus}
+                  </p>
+                  {club.refuseReason && (
+                    <p className="card-text text-danger">
+                      <strong>거절 사유 : </strong> {club.refuseReason}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       ) : (
-        <p>신청한 동아리가 없습니다.</p>
+        <div className="alert alert-info" role="alert">
+          신청한 동아리가 없습니다.
+        </div>
       )}
     </div>
   );
