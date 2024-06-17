@@ -1,28 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Container, Grid, Paper, Button, Tabs, Tab } from '@mui/material';
-import { fetchActivityVideos } from '../api/master/BoardApi';
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Container,
+  Grid,
+  Paper,
+  Button,
+  Tabs,
+  Tab,
+} from "@mui/material";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import { AuthContext } from "../AuthContext";
+import NoticeClubList from '../components/board/NoticeClubList';
+import ActivityVideoBoardList from "./board/ActivityVideoBoardList";
 
 const MainDashboard = () => {
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
-  const [activityVideos, setActivityVideos] = useState([]);
-
-  useEffect(() => {
-    const loadActivityVideos = async () => {
-      try {
-        const videos = await fetchActivityVideos();
-        setActivityVideos(videos);
-      } catch (error) {
-        console.error('활동 영상 불러오기 에러:', error);
-      }
-    };
-
-    loadActivityVideos();
-  }, []);
+  const { isLoggedIn, logout } = useContext(AuthContext);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const handleIconClick = () => {
+    navigate("/mypage");
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
   };
 
   return (
@@ -101,20 +110,20 @@ const MainDashboard = () => {
         <Grid container spacing={3}>
           {/* 동아리 행사 공지 */}
           <Grid item xs={12} md={6}>
-            <Paper
-              sx={{
-                p: 2,
-                display: "flex",
-                flexDirection: "column",
-                cursor: "pointer",
-              }}
-              onClick={() => navigate("/posts/noticeClub")}
-            >
-              <Typography variant="h6" gutterBottom>동아리 행사 공지</Typography>
-              <Typography>공지 1</Typography>
-              <Typography>공지 2</Typography>
-              <Typography>공지 3</Typography>
-            </Paper>
+          <Paper
+  sx={{
+    p: 2,
+    display: "flex",
+    flexDirection: "column",
+    cursor: "pointer",
+  }}
+  onClick={() => navigate("/posts/noticeClub")}
+>
+  <Typography variant="h6" gutterBottom>
+    동아리 행사 공지
+  </Typography>
+  <NoticeClubList />
+</Paper>
           </Grid>
 
           {/* 부원 모집 게시판 */}
@@ -128,7 +137,10 @@ const MainDashboard = () => {
               }}
               onClick={() => navigate("/posts/recruitMember")}
             >
-              <Typography variant="h6" gutterBottom>부원 모집 게시판</Typography>
+              <Typography variant="h6" gutterBottom>
+                부원 모집 게시판
+              </Typography>
+              {/* 여기에 실제 모집 공고 목록을 렌더링합니다 */}
               <Typography>모집 공고 1</Typography>
               <Typography>모집 공고 2</Typography>
               <Typography>모집 공고 3</Typography>
@@ -165,22 +177,6 @@ const MainDashboard = () => {
               <Typography variant="h6" gutterBottom>
                 활동 영상
               </Typography>
-              <Grid container spacing={2}>
-                {activityVideos.map((video, index) => (
-                  <Grid item xs={4} key={index}>
-                    <Paper sx={{ p: 2, textAlign: "center" }}>
-                      <iframe
-                        width="100%"
-                        height="315"
-                        src={video.youtubeUrl}
-                        title={`영상 ${index + 1}`}
-                        frameBorder="0"
-                        allowFullScreen
-                      ></iframe>
-                    </Paper>
-                  </Grid>
-                ))}
-              </Grid>
             </Paper>
           </Grid>
         </Grid>

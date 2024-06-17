@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchPosts, saveNoticeClub } from '../../api/master/BoardApi';
 import PostManagement from '../../api/master/PostManagement';
+import { Typography, List, ListItem, ListItemText, ListItemAvatar, Avatar } from '@mui/material';
 
 const NoticeClubBoard = () => {
   const [posts, setPosts] = useState([]);
@@ -15,7 +16,6 @@ const NoticeClubBoard = () => {
         console.error('Error fetching posts:', error);
       }
     };
-
     loadPosts();
   }, []);
 
@@ -33,24 +33,55 @@ const NoticeClubBoard = () => {
 
   return (
     <div>
-      <h1>동아리 행사 공지</h1>
+      <Typography variant="h4" gutterBottom>
+        동아리 행사 공지
+      </Typography>
       <button onClick={() => setShowPostForm(true)}>게시글 등록</button>
       {showPostForm && (
         <PostManagement
           category="noticeClub"
-          onSubmit={handlePostFormSubmit}
+          onPostSubmit={handlePostFormSubmit}
         />
       )}
 
-      <h2>게시글 목록</h2>
-      <ul>
+      <Typography variant="h5" gutterBottom>
+        게시글 목록
+      </Typography>
+      <List>
         {posts.map((post) => (
-          <li key={post.id}>
-            <h3>{post.title}</h3>
-            <p>{post.content}</p>
-          </li>
+          <ListItem key={post.id} alignItems="flex-start">
+          {post.imageRoute && (
+            <ListItemAvatar>
+             <Avatar alt="Post Image" src={`http://localhost:8080/master/board/image/${post.imageRoute}`} />
+            </ListItemAvatar>
+          )}
+          <ListItemText
+            primary={
+              <>
+                <Typography component="span" variant="subtitle1" color="textPrimary">
+                  제목: {post.title}
+                </Typography>
+              </>
+            }
+            secondary={
+              <>
+                <Typography component="span" variant="body2" color="textPrimary">
+                  작성자: {post.writer}
+                </Typography>
+                <br />
+                {/* <Typography component="span" variant="body2" color="textSecondary">
+                  작성일: {post.createdAt}
+                </Typography>
+                <br /> */}
+                <Typography component="span" variant="body2" color="textSecondary">
+                내용: {post.content}
+                </Typography>
+              </>
+            }
+          />
+        </ListItem>
         ))}
-      </ul>
+      </List>
     </div>
   );
 };
