@@ -13,6 +13,8 @@ import {
 } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { AuthContext } from "../AuthContext";
+import NoticeClubList from '../components/board/NoticeClubList';
+import ActivityVideoBoardList from "./board/ActivityVideoBoardList";
 
 const MainDashboard = () => {
   const [value, setValue] = useState(0);
@@ -22,13 +24,6 @@ const MainDashboard = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  // YouTube 동영상 URL 배열
-  const videoUrls = [
-    "https://www.youtube.com/embed/video1",
-    "https://www.youtube.com/embed/video2",
-    "https://www.youtube.com/embed/video3",
-  ];
 
   const handleIconClick = () => {
     navigate("/mypage");
@@ -115,23 +110,20 @@ const MainDashboard = () => {
         <Grid container spacing={3}>
           {/* 동아리 행사 공지 */}
           <Grid item xs={12} md={6}>
-            <Paper
-              sx={{
-                p: 2,
-                display: "flex",
-                flexDirection: "column",
-                cursor: "pointer",
-              }}
-              onClick={() => navigate("/posts/noticeClub")}
-            >
-              <Typography variant="h6" gutterBottom>
-                동아리 행사 공지
-              </Typography>
-              {/* 여기에 실제 공지 목록을 렌더링합니다 */}
-              <Typography>공지 1</Typography>
-              <Typography>공지 2</Typography>
-              <Typography>공지 3</Typography>
-            </Paper>
+          <Paper
+  sx={{
+    p: 2,
+    display: "flex",
+    flexDirection: "column",
+    cursor: "pointer",
+  }}
+  onClick={() => navigate("/posts/noticeClub")}
+>
+  <Typography variant="h6" gutterBottom>
+    동아리 행사 공지
+  </Typography>
+  <NoticeClubList />
+</Paper>
           </Grid>
 
           {/* 부원 모집 게시판 */}
@@ -185,22 +177,6 @@ const MainDashboard = () => {
               <Typography variant="h6" gutterBottom>
                 활동 영상
               </Typography>
-              <Grid container spacing={2}>
-                {videoUrls.map((url, index) => (
-                  <Grid item xs={4} key={index}>
-                    <Paper sx={{ p: 2, textAlign: "center" }}>
-                      <iframe
-                        width="100%"
-                        height="315"
-                        src={url}
-                        title={`영상 ${index + 1}`}
-                        frameBorder="0"
-                        allowFullScreen
-                      ></iframe>
-                    </Paper>
-                  </Grid>
-                ))}
-              </Grid>
             </Paper>
           </Grid>
         </Grid>

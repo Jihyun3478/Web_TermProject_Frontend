@@ -1,4 +1,3 @@
-// src/App.js
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SignUp from "./components/member/SignUp";
@@ -32,20 +31,13 @@ function App() {
           <Route path="/posts/activityVideo" element={<ActivityVideoBoard />} />
           <Route path="/posts/activityPhoto" element={<ActivityPhotoBoard />} />
           <Route path="/master/postManagement" element={<PostManagement />} />
-
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/signIn" element={<SignIn />} />
-          <Route path="/mypage" element={<MemberInfo />} />
-          <Route path="/mypage/applyClubList" element={<MyApplyClubList />} />
+          <Route path="/memberInfo" element={<MemberInfo />} />
           <Route path="/admin" element={<ApplyClubList />} />
-          <Route
-            path="/admin/list/:applyClubId"
-            element={<ApplyClubDetail />}
-          />
-
+          <Route path="/admin/list/:applyClubId" element={<ApplyClubDetail />} />
           <Route path="/kakaoOauth2Login" element={<Oauth2Login />} />
           <Route path="/loginSuccess" element={<LoginSuccess />} />
-
           <Route path="/applyClub/create" element={<RegisterApplyClub />} />
           <Route path="/master/clubList" element={<MasterClubListInfo />} />
           <Route path="/notApplyClubList" element={<NotApplyClubList />} />
