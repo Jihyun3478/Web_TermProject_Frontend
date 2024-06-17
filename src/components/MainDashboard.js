@@ -64,44 +64,28 @@ const MainDashboard = () => {
         </Toolbar>
         <Tabs value={value} onChange={handleChange} centered>
           <Tab
-            label={
-              <Link
-                to="/clubList"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                동아리 조회
-              </Link>
-            }
+            label="동아리 조회"
+            component={Link}
+            to="/allClubList"
+            style={{ textDecoration: "none", color: "inherit" }}
           />
           <Tab
-            label={
-              <Link
-                to="/events"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                동아리 행사
-              </Link>
-            }
+            label="동아리 행사"
+            component={Link}
+            to="/events"
+            style={{ textDecoration: "none", color: "inherit" }}
           />
           <Tab
-            label={
-              <Link
-                to="/videos"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                동영상
-              </Link>
-            }
+            label="동영상"
+            component={Link}
+            to="/videos"
+            style={{ textDecoration: "none", color: "inherit" }}
           />
           <Tab
-            label={
-              <Link
-                to="/photos"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                사진
-              </Link>
-            }
+            label="사진"
+            component={Link}
+            to="/photos"
+            style={{ textDecoration: "none", color: "inherit" }}
           />
         </Tabs>
       </AppBar>

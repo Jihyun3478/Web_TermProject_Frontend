@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getMemberInfo } from "../../api/api.js";
 import { useNavigate } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const MemberInfo = () => {
   const navigate = useNavigate();
@@ -36,18 +37,28 @@ const MemberInfo = () => {
   };
 
   return (
-    <div>
-      <h2>사용자 정보</h2>
-      <p>사용자 고유 ID: {id}</p>
-      <button onClick={handleButtonClickMasterClubList}>
-        마스터 클럽 보기
-      </button>
-      <button onClick={handleButtonClickNotApplyClubList}>
-        클럽 목록 보기
-      </button>
-      <button onClick={handleButtonClickMyApplyClubList}>
-        동아리 신청 목록 보기
-      </button>
+    <div className="container mt-5">
+      <h2 className="text-center mb-4">마이페이지</h2>
+      <div className="d-flex justify-content-center">
+        <button
+          className="btn btn-primary mx-2"
+          onClick={handleButtonClickMasterClubList}
+        >
+          마스터 동아리 보기
+        </button>
+        <button
+          className="btn btn-secondary mx-2"
+          onClick={handleButtonClickNotApplyClubList}
+        >
+          나의 동아리 목록 보기
+        </button>
+        <button
+          className="btn btn-info mx-2"
+          onClick={handleButtonClickMyApplyClubList}
+        >
+          동아리 신청 목록 보기
+        </button>
+      </div>
     </div>
   );
 };

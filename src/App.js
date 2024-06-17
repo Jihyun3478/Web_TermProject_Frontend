@@ -6,6 +6,7 @@ import MyApplyClubList from "./components/member/MyApplyClubList";
 import MemberInfo from "./components/member/MyPage";
 import MasterClubListInfo from "./components/master/MasterClubListInfo";
 import NotApplyClubList from "./components/club/NotApplyClubList";
+import AllClubList from "./components/club/AllClubList";
 import Oauth2Login from "./components/kakao/Oauth2Login";
 import LoginSuccess from "./components/kakao/LoginSuccess";
 import RegisterApplyClub from "./components/applyClub/RegisterApplyClub";
@@ -41,6 +42,7 @@ function App() {
           <Route path="/applyClub/create" element={<RegisterApplyClub />} />
           <Route path="/master/clubList" element={<MasterClubListInfo />} />
           <Route path="/notApplyClubList" element={<NotApplyClubList />} />
+          <Route path="/allClubList" element={<AllClubList />} />
         </Routes>
       </Router>
     </AuthProvider>
