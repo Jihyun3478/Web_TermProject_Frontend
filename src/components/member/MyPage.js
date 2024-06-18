@@ -46,7 +46,7 @@ const MemberInfo = () => {
           className="btn btn-secondary mx-2"
           onClick={handleButtonClickNotApplyClubList}
         >
-          동아리 목록 보기
+          미가입 동아리 목록 보기
         </button>
         <button
           className="btn btn-info mx-2"
