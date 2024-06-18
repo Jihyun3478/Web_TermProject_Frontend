@@ -20,7 +20,7 @@ const ApplyClubDetail = ({ onClose }) => {
       try {
         if (!applyClubId) return;
 
-        const token = localStorage.getItem("token");
+        const token = sessionStorage.getItem("token");
         const data = await fetchApplyClubDetail(applyClubId, token);
         setApplyClubDetail(data);
 
@@ -38,7 +38,7 @@ const ApplyClubDetail = ({ onClose }) => {
   }, [applyClubId]);
 
   const handleAccept = async () => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     try {
       await acceptApplyClub(applyClubId, token);
       setNotification("동아리 신청이 승인되었습니다.");
@@ -51,7 +51,7 @@ const ApplyClubDetail = ({ onClose }) => {
   };
 
   const handleRefuse = async () => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     try {
       await refuseApplyClub(applyClubId, refuseReason, token);
       setNotification("동아리 신청이 거절되었습니다.");

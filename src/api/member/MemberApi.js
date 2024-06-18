@@ -8,7 +8,7 @@ const api = axios.create({
 });
 
 export const getApplyClubList = async () => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   return api.get("/member/applyClub/list", {
     headers: {
       Authorization: `Bearer ${token}`,

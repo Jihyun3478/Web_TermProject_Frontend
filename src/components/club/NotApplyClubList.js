@@ -21,7 +21,7 @@ const NotApplyClubList = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const getClubs = async () => {
       try {
         const data = await fetchClubs(token);
@@ -52,7 +52,7 @@ const NotApplyClubList = () => {
     const file = e.target.files[0];
     if (!file) return;
 
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     try {
       const response = await uploadFile(file, clubId, token);

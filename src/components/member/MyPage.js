@@ -20,10 +20,6 @@ const MemberInfo = () => {
     fetchMemberInfo();
   }, []);
 
-  if (id === null) {
-    return <div>Loading...</div>;
-  }
-
   const handleButtonClickMasterClubList = () => {
     navigate("/master/clubList");
   };
@@ -50,7 +46,7 @@ const MemberInfo = () => {
           className="btn btn-secondary mx-2"
           onClick={handleButtonClickNotApplyClubList}
         >
-          나의 동아리 목록 보기
+          동아리 목록 보기
         </button>
         <button
           className="btn btn-info mx-2"
