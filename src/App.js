@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SignUp from "./components/member/SignUp";
 import SignIn from "./components/member/SignIn";
 import MyApplyClubList from "./components/member/MyApplyClubList";
-import MemberInfo from "./components/member/MyPage";
+import MyPage from "./components/member/MyPage";
 import MasterClubListInfo from "./components/master/MasterClubListInfo";
 import NotApplyClubList from "./components/club/NotApplyClubList";
 import AllClubList from "./components/club/AllClubList";
@@ -34,9 +34,13 @@ function App() {
           <Route path="/master/postManagement" element={<PostManagement />} />
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/signIn" element={<SignIn />} />
-          <Route path="/memberInfo" element={<MemberInfo />} />
+          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/mypage/applyClubList" element={<MyApplyClubList />} />
           <Route path="/admin" element={<ApplyClubList />} />
-          <Route path="/admin/list/:applyClubId" element={<ApplyClubDetail />} />
+          <Route
+            path="/admin/list/:applyClubId"
+            element={<ApplyClubDetail />}
+          />
           <Route path="/kakaoOauth2Login" element={<Oauth2Login />} />
           <Route path="/loginSuccess" element={<LoginSuccess />} />
           <Route path="/applyClub/create" element={<RegisterApplyClub />} />

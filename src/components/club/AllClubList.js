@@ -11,7 +11,7 @@ const AllClubList = () => {
   useEffect(() => {
     const loadClubs = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = sessionStorage.getItem("token");
         const data = await fetchAllClubs(token);
         setClubs(data);
       } catch (error) {

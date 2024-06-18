@@ -9,7 +9,7 @@ const ApplyClubList = () => {
   const [notification, setNotification] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     fetchApplyClubList(token)
       .then((data) => {
         setApplyClubList(data);

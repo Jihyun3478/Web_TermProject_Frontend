@@ -11,7 +11,7 @@ const api = axios.create({
   export const signIn = (userData) => api.post('/signin', userData);
   
   export const getMemberInfo = () => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem("token");
     return api.get('/memberInfo', {
       headers: {
         Authorization: `Bearer ${token}`,

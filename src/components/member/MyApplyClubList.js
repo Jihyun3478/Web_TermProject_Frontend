@@ -24,8 +24,12 @@ const MyApplyClubList = () => {
       {applyClubList.length > 0 ? (
         <div className="row">
           {applyClubList.map((club) => (
-            <div key={club.applyClubId} className="col-md-4 mb-4">
-              <div className="card h-100">
+            <div key={club.applyClubId} className="col-md-6 mb-4">
+              {" "}
+              {/* col-md-6으로 변경 */}
+              <div className="card h-100" style={{ minHeight: "160px" }}>
+                {" "}
+                {/* 카드 높이 조정 */}
                 <div className="card-body">
                   <h5 className="card-title" style={{ fontSize: "1.5rem" }}>
                     동아리 이름 : {club.clubName}
