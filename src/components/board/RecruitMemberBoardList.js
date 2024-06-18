@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { fetchActivityVideos } from '../../api/board/BoardApi'; // 경로 확인 후 수정
-import { Typography, List, ListItem, ListItemText } from '@mui/material';
+import { fetchPosts } from '../../api/board/BoardApi'; // 경로 확인 후 수정
+import { Typography, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-const ActivityVideoBoardList = () => {
+const RecruitMemberBoardList = () => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const loadPosts = async () => {
       try {
-        const fetchedActivityVideos = await fetchActivityVideos('/activityVideo/findAll');
-        setPosts(fetchedActivityVideos);
+        const fetchedPosts = await fetchPosts('/recruitMember/findAll');
+        setPosts(fetchedPosts);
       } catch (error) {
         console.error('Error fetching posts:', error);
       }
@@ -20,7 +21,7 @@ const ActivityVideoBoardList = () => {
   return (
     <>
       <Typography variant="h6" gutterBottom>
-        활동 영상목록
+        부원 모집 게시글 목록
       </Typography>
       <List>
         {posts.map((post) => (
@@ -33,4 +34,4 @@ const ActivityVideoBoardList = () => {
   );
 };
 
-export default ActivityVideoBoardList;
+export default RecruitMemberBoardList;
