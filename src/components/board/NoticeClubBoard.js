@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { fetchPosts, saveNoticeClub } from '../../api/board/BoardApi';
 import PostNoticeClub from './PostNoticeClub';
 import { Button, Container, Row, Col, ListGroup, Image } from 'react-bootstrap';
+import { AuthContext } from '../../AuthContext'; // Assuming your AuthContext is defined similarly
 
 const NoticeClubBoard = () => {
   const [posts, setPosts] = useState([]);
   const [showPostForm, setShowPostForm] = useState(false);
+  const { role } = useContext(AuthContext); // Assuming AuthContext provides role information
 
   useEffect(() => {
     const loadPosts = async () => {
@@ -42,11 +44,13 @@ const NoticeClubBoard = () => {
         <PostNoticeClub onPostSubmit={handlePostFormSubmit} onCancel={() => setShowPostForm(false)} />
       ) : (
         <>
-          <Row className="mb-4">
-            <Col>
-              <Button variant="primary" onClick={() => setShowPostForm(true)}>게시글 등록</Button>
-            </Col>
-          </Row>
+          {role === 'MASTER_MEMBER' && ( // Conditionally render based on role
+            <Row className="mb-4">
+              <Col>
+                <Button variant="primary" onClick={() => setShowPostForm(true)}>게시글 등록</Button>
+              </Col>
+            </Row>
+          )}
           <Row>
             <Col>
               <h2>게시글 목록</h2>
