@@ -44,7 +44,7 @@ const NoticeClubBoard = () => {
         <PostNoticeClub onPostSubmit={handlePostFormSubmit} onCancel={() => setShowPostForm(false)} />
       ) : (
         <>
-          {role === 'MASTER_MEMBER' && ( // Conditionally render based on role
+          {role === 'MASTER_MEMBER' && (
             <Row className="mb-4">
               <Col>
                 <Button variant="primary" onClick={() => setShowPostForm(true)}>게시글 등록</Button>
@@ -55,11 +55,16 @@ const NoticeClubBoard = () => {
             <Col>
               <h2>게시글 목록</h2>
               <ListGroup>
-                {posts.map((post) => (
+                {posts.map(post => (
                   <ListGroup.Item key={post.id} className="d-flex align-items-start">
-                    {post.imageRoute && (
+                    {post.isPublic ? (
+                      <span className="badge bg-primary me-2">전체 공지</span>
+                    ) : (
+                      <span className="badge bg-secondary me-2">소속 동아리 공지</span>
+                    )}
+                    {post.photoBase64 && (
                       <Image
-                        src={`http://localhost:8080/master/board/image/${post.imageRoute}`}
+                        src={`data:image/jpeg;base64,${post.photoBase64}`}
                         rounded
                         className="me-3"
                         style={{ width: '60px', height: '60px', objectFit: 'cover' }}

@@ -5,12 +5,15 @@ const PostNoticeClub = ({ onPostSubmit, onCancel }) => {
     title: '',
     content: '',
     image: null,
+    isPublic: true, // Default to true for public notice
   });
 
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
+    const { name, value, files, checked } = e.target;
     if (name === 'image') {
       setNewPost({ ...newPost, image: files[0] });
+    } else if (name === 'isPublic') {
+      setNewPost({ ...newPost, isPublic: checked });
     } else {
       setNewPost({ ...newPost, [name]: value });
     }
@@ -22,6 +25,7 @@ const PostNoticeClub = ({ onPostSubmit, onCancel }) => {
     const dto = {
       title: newPost.title,
       content: newPost.content,
+      isPublic: newPost.isPublic,
     };
     formData.append('noticeClubRequestDTO', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
     if (newPost.image) {
@@ -54,6 +58,19 @@ const PostNoticeClub = ({ onPostSubmit, onCancel }) => {
             value={newPost.content}
             onChange={handleChange}
           ></textarea>
+        </div>
+        <div className="mb-3 form-check">
+          <input
+            type="checkbox"
+            className="form-check-input"
+            id="isPublic"
+            name="isPublic"
+            checked={newPost.isPublic}
+            onChange={handleChange}
+          />
+          <label className="form-check-label" htmlFor="isPublic">
+            전체 공개
+          </label>
         </div>
         <div className="mb-3">
           <label htmlFor="image" className="form-label">이미지:</label>
