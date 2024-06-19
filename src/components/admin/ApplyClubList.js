@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { fetchApplyClubList } from "../../api/admin/AdminApi";
 import ApplyClubDetail from "./ApplyClubDetail";
 
@@ -7,6 +7,7 @@ const ApplyClubList = () => {
   const [applyClubList, setApplyClubList] = useState([]);
   const [error, setError] = useState(null);
   const [notification, setNotification] = useState(null);
+  const navigate = useNavigate(); // useNavigate 훅을 사용하여 네비게이트 기능 추가
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -26,7 +27,14 @@ const ApplyClubList = () => {
 
   return (
     <div className="container mt-4">
-      <h2 className="text-center">관리자 페이지 - 동아리 신청 관리</h2>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <button className="btn btn-secondary" onClick={() => navigate("/")}>
+          이전
+        </button>
+        <h2 className="text-center flex-grow-1">
+          관리자 페이지 - 동아리 신청 관리
+        </h2>
+      </div>
       {error && <div className="alert alert-danger mt-3">{error}</div>}
       {notification && (
         <div className="alert alert-success mt-3">{notification}</div>
@@ -41,7 +49,6 @@ const ApplyClubList = () => {
                 className="list-group-item"
                 style={{ cursor: "pointer" }}
               >
-                {/* Link 컴포넌트를 사용하여 동적 링크 설정 */}
                 <Link to={`/admin/list/${applyClub.applyClubId}`}>
                   {applyClub.clubName} - {applyClub.name}
                 </Link>
@@ -51,7 +58,6 @@ const ApplyClubList = () => {
         </div>
       </div>
 
-      {/* Routes와 Route를 사용하여 ApplyClubDetail 컴포넌트와 URL 경로를 연결 */}
       <Routes>
         <Route
           path="/admin/list/:applyClubId"

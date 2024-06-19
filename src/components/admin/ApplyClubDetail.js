@@ -4,7 +4,8 @@ import {
   acceptApplyClub,
   refuseApplyClub,
 } from "../../api/admin/AdminApi";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const ApplyClubDetail = ({ onClose }) => {
   const { applyClubId } = useParams();
@@ -12,9 +13,8 @@ const ApplyClubDetail = ({ onClose }) => {
   const [refuseReason, setRefuseReason] = useState("");
   const [error, setError] = useState(null);
   const [notification, setNotification] = useState(null);
-  const [isAccepted, setIsAccepted] = useState(false);
-  const [isRefused, setIsRefused] = useState(false);
   const [showRefuseModal, setShowRefuseModal] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadDetail = async () => {
@@ -24,11 +24,6 @@ const ApplyClubDetail = ({ onClose }) => {
         const token = sessionStorage.getItem("token");
         const data = await fetchApplyClubDetail(applyClubId, token);
         setApplyClubDetail(data);
-
-        if (data) {
-          setIsAccepted(data.ApplyClubStatus === "CLUB_MEMBER");
-          setIsRefused(data.ApplyClubStatus === "REFUSED");
-        }
       } catch (error) {
         setError("동아리 신청 상세 정보를 불러오는 중 오류가 발생했습니다.");
         console.error(error);
@@ -43,7 +38,10 @@ const ApplyClubDetail = ({ onClose }) => {
     try {
       await acceptApplyClub(applyClubId, token);
       setNotification("동아리 신청이 승인되었습니다.");
-      setIsAccepted(true);
+      setApplyClubDetail((prevDetail) => ({
+        ...prevDetail,
+        applyClubStatus: "ACCEPT",
+      }));
       if (typeof onClose === "function") onClose();
     } catch (error) {
       setError("동아리 신청 승인 과정에서 오류가 발생했습니다.");
@@ -58,7 +56,10 @@ const ApplyClubDetail = ({ onClose }) => {
       setNotification("동아리 신청이 거절되었습니다.");
       setRefuseReason("");
       setShowRefuseModal(false);
-      setIsRefused(true);
+      setApplyClubDetail((prevDetail) => ({
+        ...prevDetail,
+        applyClubStatus: "REFUSE",
+      }));
       if (typeof onClose === "function") onClose();
     } catch (error) {
       setError("동아리 신청 거절 과정에서 오류가 발생했습니다.");
@@ -70,13 +71,24 @@ const ApplyClubDetail = ({ onClose }) => {
     setRefuseReason(e.target.value);
   };
 
+  const handleGoBack = () => {
+    navigate("/admin");
+  };
+
   if (!applyClubDetail) {
     return <div>Loading...</div>;
   }
 
+  const { applyClubStatus } = applyClubDetail;
+
   return (
     <div className="container mt-4">
-      <h3 className="text-center">선택한 동아리 신청 상세 정보</h3>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <button className="btn btn-secondary" onClick={handleGoBack}>
+          이전
+        </button>
+        <h3 className="text-center">선택한 동아리 신청 상세 정보</h3>
+      </div>
       {error && <div className="alert alert-danger">{error}</div>}
       {notification && (
         <div className="alert alert-success">{notification}</div>
@@ -108,20 +120,20 @@ const ApplyClubDetail = ({ onClose }) => {
             <strong>지도 교수 전화번호:</strong> {applyClubDetail.pphoneNum}
           </p>
           <p className="card-text">
-            <strong>신청 상태:</strong> {applyClubDetail.ApplyClubStatus}
+            <strong>신청 상태:</strong> {applyClubStatus}
           </p>
-          {!isAccepted && !isRefused && (
-            <button className="btn btn-success me-2" onClick={handleAccept}>
-              승인
-            </button>
-          )}
-          {!isAccepted && !isRefused && (
-            <button
-              className="btn btn-danger"
-              onClick={() => setShowRefuseModal(true)}
-            >
-              거절
-            </button>
+          {applyClubStatus !== "ACCEPT" && applyClubStatus !== "REFUSE" && (
+            <>
+              <button className="btn btn-success me-2" onClick={handleAccept}>
+                승인
+              </button>
+              <button
+                className="btn btn-danger"
+                onClick={() => setShowRefuseModal(true)}
+              >
+                거절
+              </button>
+            </>
           )}
         </div>
       </div>

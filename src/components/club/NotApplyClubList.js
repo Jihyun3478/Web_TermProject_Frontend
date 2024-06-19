@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import {
   fetchClubs,
   downloadTemplate,
@@ -8,6 +9,7 @@ import {
 const NotApplyClubList = () => {
   const [clubs, setClubs] = useState([]);
   const [selectedClubId, setSelectedClubId] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -54,9 +56,16 @@ const NotApplyClubList = () => {
     }
   };
 
+  const handleGoBack = () => {
+    navigate("/mypage");
+  };
+
   return (
     <div className="container mt-4">
       <h1 className="centered-heading">Club List</h1>
+      <button className="btn btn-secondary" onClick={handleGoBack}>
+        이전
+      </button>
       <button className="btn btn-primary mb-3" onClick={handleDownloadTemplate}>
         동아리 가입 신청서 양식 다운로드
       </button>
