@@ -12,7 +12,8 @@ const ApplyClubDetail = ({ onClose }) => {
   const [refuseReason, setRefuseReason] = useState("");
   const [error, setError] = useState(null);
   const [notification, setNotification] = useState(null);
-  const [isAccepted, setIsAccepted] = useState(false); // 동아리 승인 여부를 관리하는 상태 추가
+  const [isAccepted, setIsAccepted] = useState(false);
+  const [isRefused, setIsRefused] = useState(false);
   const [showRefuseModal, setShowRefuseModal] = useState(false);
 
   useEffect(() => {
@@ -24,9 +25,9 @@ const ApplyClubDetail = ({ onClose }) => {
         const data = await fetchApplyClubDetail(applyClubId, token);
         setApplyClubDetail(data);
 
-        // 서버에서 받은 데이터에 따라 승인 여부를 설정합니다.
-        if (data && data.isAccepted) {
-          setIsAccepted(true);
+        if (data) {
+          setIsAccepted(data.ApplyClubStatus === "CLUB_MEMBER");
+          setIsRefused(data.ApplyClubStatus === "REFUSED");
         }
       } catch (error) {
         setError("동아리 신청 상세 정보를 불러오는 중 오류가 발생했습니다.");
@@ -42,7 +43,7 @@ const ApplyClubDetail = ({ onClose }) => {
     try {
       await acceptApplyClub(applyClubId, token);
       setNotification("동아리 신청이 승인되었습니다.");
-      setIsAccepted(true); // 승인됨으로 상태 변경
+      setIsAccepted(true);
       if (typeof onClose === "function") onClose();
     } catch (error) {
       setError("동아리 신청 승인 과정에서 오류가 발생했습니다.");
@@ -57,6 +58,7 @@ const ApplyClubDetail = ({ onClose }) => {
       setNotification("동아리 신청이 거절되었습니다.");
       setRefuseReason("");
       setShowRefuseModal(false);
+      setIsRefused(true);
       if (typeof onClose === "function") onClose();
     } catch (error) {
       setError("동아리 신청 거절 과정에서 오류가 발생했습니다.");
@@ -105,22 +107,25 @@ const ApplyClubDetail = ({ onClose }) => {
           <p className="card-text">
             <strong>지도 교수 전화번호:</strong> {applyClubDetail.pphoneNum}
           </p>
-          {!isAccepted && ( // 승인되지 않은 경우에만 버튼을 표시합니다.
+          <p className="card-text">
+            <strong>신청 상태:</strong> {applyClubDetail.ApplyClubStatus}
+          </p>
+          {!isAccepted && !isRefused && (
             <button className="btn btn-success me-2" onClick={handleAccept}>
               승인
             </button>
           )}
-          <button
-            className="btn btn-danger"
-            onClick={() => setShowRefuseModal(true)}
-            disabled={isAccepted} // 승인된 경우에는 버튼을 비활성화합니다.
-          >
-            거절
-          </button>
+          {!isAccepted && !isRefused && (
+            <button
+              className="btn btn-danger"
+              onClick={() => setShowRefuseModal(true)}
+            >
+              거절
+            </button>
+          )}
         </div>
       </div>
 
-      {/* Refuse Modal */}
       {showRefuseModal && (
         <div
           className="modal fade show"
