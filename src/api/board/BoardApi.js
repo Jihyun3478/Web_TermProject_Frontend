@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8080/master/board';
+const API_BASE_URL = 'http://localhost:8080';
 
 export const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -28,7 +28,7 @@ export const saveNoticeClub = async (formData) => {
       },
     };
 
-    const response = await axiosInstance.post('/api/saveNoticeClub', formData, config);
+    const response = await axiosInstance.post('/master/board/api/saveNoticeClub', formData, config);
 
     return response.data;
   } catch (error) {
@@ -46,7 +46,7 @@ export const saveRecruitMember = async (formData) => {
       },
     };
 
-    const response = await axiosInstance.post('/api/saveRecruitMember', formData, config);
+    const response = await axiosInstance.post('/master/board/api/saveRecruitMember', formData, config);
 
     return response.data;
   } catch (error) {
@@ -64,7 +64,7 @@ export const saveActivityPhoto = async (formData) => {
       },
     };
 
-    const response = await axiosInstance.post('/api/saveActivityPhoto', formData, config);
+    const response = await axiosInstance.post('/master/board/api/saveActivityPhoto', formData, config);
 
     return response.data;
   } catch (error) {
@@ -76,7 +76,7 @@ export const saveActivityPhoto = async (formData) => {
 // Save activity video post
 export const saveActivityVideo = async (data) => {
   try {
-    const response = await axiosInstance.post('/api/saveActivityVideo', data, {
+    const response = await axiosInstance.post('/master/board/api/saveActivityVideo', data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -91,18 +91,18 @@ export const saveActivityVideo = async (data) => {
 // Fetch posts from the server
 export const fetchPosts = async (url) => {
   try {
-    const response = await axiosInstance.get(url);
-    console.log('데이터 : ', response.data); // 데이터 로그 출력
-    return response.data; // 데이터 반환
+    const response = await axiosInstance.get('/master/board' + url);
+    return response.data;
   } catch (error) {
-    console.error('동아리 공지 불러오기 오류 :', error);
+    console.error('Failed to fetch posts:', error);
     throw error;
   }
 };
 
+// Fetch recruit member posts
 export const fetchRecruitMember = async (url) => {
   try {
-    const response = await axiosInstance.get(url);
+    const response = await axiosInstance.get('/master/board' + url);
     return response.data;
   } catch (error) {
     console.error('부원 모집 불러오기 오류:', error);
@@ -110,10 +110,10 @@ export const fetchRecruitMember = async (url) => {
   }
 };
 
-// Fetch activity videos from the server
+// Fetch activity videos
 export const fetchActivityVideos = async (url) => {
   try {
-    const response = await axiosInstance.get(url);
+    const response = await axiosInstance.get('/master/board' + url);
     return response.data;
   } catch (error) {
     console.error('활동 영상 불러오기 오류:', error);
@@ -121,12 +121,25 @@ export const fetchActivityVideos = async (url) => {
   }
 };
 
+// Fetch activity photos
 export const fetchActivityPhotos = async (url) => {
   try {
-    const response = await axiosInstance.get(url);
+    const response = await axiosInstance.get('/master/board' + url);
     return response.data;
   } catch (error) {
     console.error('활동 사진 불러오기 오류:', error);
+    throw error;
+  }
+};
+
+// Fetch user info
+export const fetchUserInfo = async () => {
+  try {
+    const response = await axiosInstance.get('/api/memberInfo');
+    const { isLoggedIn, role } = response.data;
+    return { isLoggedIn, role };
+  } catch (error) {
+    console.error('Failed to fetch user info:', error);
     throw error;
   }
 };
