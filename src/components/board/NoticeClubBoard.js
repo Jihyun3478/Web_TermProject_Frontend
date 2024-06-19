@@ -44,7 +44,7 @@ const NoticeClubBoard = () => {
         <PostNoticeClub onPostSubmit={handlePostFormSubmit} onCancel={() => setShowPostForm(false)} />
       ) : (
         <>
-          {role === 'MASTER_MEMBER' && ( // Conditionally render based on role
+          {role === 'MASTER_MEMBER' && (
             <Row className="mb-4">
               <Col>
                 <Button variant="primary" onClick={() => setShowPostForm(true)}>게시글 등록</Button>
@@ -54,25 +54,27 @@ const NoticeClubBoard = () => {
           <Row>
             <Col>
               <h2>게시글 목록</h2>
-              <ListGroup>
-                {posts.map((post) => (
-                  <ListGroup.Item key={post.id} className="d-flex align-items-start">
-                    {post.imageRoute && (
-                      <Image
-                        src={`http://localhost:8080/master/board/image/${post.imageRoute}`}
-                        rounded
-                        className="me-3"
-                        style={{ width: '60px', height: '60px', objectFit: 'cover' }}
-                      />
-                    )}
-                    <div className="flex-grow-1">
-                      <h5>제목: {post.title}</h5>
-                      <p className="mb-1">작성자: {post.writer}</p>
-                      <p>내용: {post.content}</p>
-                    </div>
-                  </ListGroup.Item>
-                ))}
-              </ListGroup>
+              <ListGroup.Item key={post.id} className="d-flex align-items-start">
+  {post.isPublic ? (
+    <span className="badge bg-primary me-2">전체 공지</span>
+  ) : (
+    <span className="badge bg-secondary me-2">소속 동아리 공지</span>
+  )}
+  {post.imageRoute && (
+    <Image
+      src={new URL(`http://localhost:8080/master/board/image/${encodeURIComponent(post.imageRoute)}`).toString()}
+      rounded
+      className="me-3"
+      style={{ width: '60px', height: '60px', objectFit: 'cover' }}
+    />
+  )}
+  <div className="flex-grow-1">
+    <h5>제목: {post.title}</h5>
+    <p className="mb-1">작성자: {post.writer}</p>
+    <p>내용: {post.content}</p>
+  </div>
+</ListGroup.Item>
+
             </Col>
           </Row>
         </>
