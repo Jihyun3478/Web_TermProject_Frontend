@@ -7,9 +7,9 @@ const PostActivityVideo= ({ onPostSubmit, onCancel }) => {
   });
 
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
+    const { name, value } = e.target;
     if (name === 'image') {
-      setNewPost({ ...newPost, image: files[0] });
+      setNewPost({ ...newPost});
     } else {
       setNewPost({ ...newPost, [name]: value });
     }
@@ -17,16 +17,11 @@ const PostActivityVideo= ({ onPostSubmit, onCancel }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
     const dto = {
       title: newPost.title,
       content: newPost.content,
     };
-    formData.append('activityVideoRequestDTO', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
-    if (newPost.image) {
-      formData.append('image', newPost.image);
-    }
-    await onPostSubmit(formData);
+    await onPostSubmit(JSON.stringify(dto));
   };
 
   return (

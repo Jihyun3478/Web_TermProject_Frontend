@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext  } from 'react';
 import { fetchActivityVideos, saveActivityVideo } from '../../api/board/BoardApi';
 import { Button, Container, Row, Col, ListGroup, Image } from 'react-bootstrap';
 import PostActivityVideo from './PostActivityVideo';
+import { AuthContext } from '../../AuthContext'; 
 
 const ActivityPhotoVideo = () => {
     const [posts, setPosts] = useState([]);
     const [showPostForm, setShowPostForm] = useState(false);
+    const { role } = useContext(AuthContext);
   
     useEffect(() => {
       const loadPosts = async () => {
@@ -43,11 +45,13 @@ const ActivityPhotoVideo = () => {
           <PostActivityVideo onPostSubmit={handlePostFormSubmit} onCancel={() => setShowPostForm(false)} />
         ) : (
           <>
+            {role === 'MASTER_MEMBER' && (
             <Row className="mb-4">
               <Col>
                 <Button variant="primary" onClick={() => setShowPostForm(true)}>게시글 등록</Button>
               </Col>
             </Row>
+          )}
             <Row>
               <Col>
                 <h2>활동 영상 목록</h2>
