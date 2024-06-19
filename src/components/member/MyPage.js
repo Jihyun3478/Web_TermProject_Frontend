@@ -20,6 +20,10 @@ const MemberInfo = () => {
     fetchMemberInfo();
   }, []);
 
+  const handleGoBack = () => {
+    navigate("/");
+  };
+
   const handleButtonClickMasterClubList = () => {
     navigate("/master/clubList");
   };
@@ -34,6 +38,11 @@ const MemberInfo = () => {
 
   return (
     <div className="container mt-5">
+      <div className="d-flex justify-content-start mb-4">
+        <button className="btn btn-secondary" onClick={handleGoBack}>
+          이전
+        </button>
+      </div>
       <h2 className="text-center mb-4">마이페이지</h2>
       <div className="d-flex justify-content-center">
         <button

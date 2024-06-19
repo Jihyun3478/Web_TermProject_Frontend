@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { getApplyClubList } from "../../api/member/MemberApi.js";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useNavigate } from "react-router-dom";
 
 const MyApplyClubList = () => {
   const [applyClubList, setApplyClubList] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchApplyClubList = async () => {
@@ -18,9 +20,16 @@ const MyApplyClubList = () => {
     fetchApplyClubList();
   }, []);
 
+  const handleGoBack = () => {
+    navigate("/mypage");
+  };
+
   return (
     <div className="container mt-5">
       <h3 className="text-center mb-4">동아리 신청 목록</h3>
+      <button className="btn btn-secondary" onClick={handleGoBack}>
+        이전
+      </button>
       {applyClubList.length > 0 ? (
         <div className="row">
           {applyClubList.map((club) => (

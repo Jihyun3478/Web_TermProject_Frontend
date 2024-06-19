@@ -26,8 +26,15 @@ const AllClubList = () => {
     navigate("/applyClub/create");
   };
 
+  const handleGoBack = () => {
+    navigate("/");
+  };
+
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <button className="btn btn-secondary" onClick={handleGoBack}>
+        이전
+      </button>
       <Typography variant="h4" gutterBottom>
         전체 동아리 목록
       </Typography>
