@@ -122,7 +122,7 @@ const ApplyClubDetail = ({ onClose }) => {
           <p className="card-text">
             <strong>신청 상태:</strong> {applyClubStatus}
           </p>
-          {applyClubStatus !== "ACCEPT" && applyClubStatus !== "REFUSE" && (
+          {applyClubStatus !== "ACCEPT" && (
             <>
               <button className="btn btn-success me-2" onClick={handleAccept}>
                 승인
